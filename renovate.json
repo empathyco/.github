@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": ["dependencies"],
+  "reviewersFromCodeOwners": true,
+  "dependencyDashboard": true,
+  "ignorePaths": ["**/examples/**"],
+  "aliases": {
+    "empathy": "***REMOVED***"
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "reviewersFromCodeOwners": true,
+      "labels": ["breking-dependecy"]
+    }
+  ]
+}

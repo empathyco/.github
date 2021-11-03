@@ -30,6 +30,7 @@ To help with the pr labeling, some rules have been configured:
 |*docs*|`*Docs*`|`docs{0,1}\/.+/`||
 |*dependencies*||||@renovate bot
 |*break-dependencies*||||@renovate bot
+
 As a remider this is the semantic version definition:
 
 |Release|Format|
