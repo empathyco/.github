@@ -1,0 +1,64 @@
+template: "## Changes \n $CHANGES"
+name-template: 'v$RESOLVED_VERSION 🌈'
+tag-template: '$RESOLVED_VERSION'
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'feature'
+      - 'enhancement'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+  - title: '☭ Dependencies Updates'
+    labels:
+      - 'dependecy'
+  - title: '👀 Break Dependencies Updates'
+    label: 'breaking-dependecy'
+  - title: '🧰 Breaking changes'
+    label: 'breaking-changes'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+version-resolver:
+  major:
+    labels:
+      - 'breaking-changes'
+  minor:
+    labels:
+      - 'feature'
+      - 'enhancement'
+      - 'breaking-dependecy'
+  patch:
+    labels:
+      - 'patch'
+      - 'bug'
+      - 'docs'
+      - 'maintenance'
+      - 'dependecy'
+  default: patch
+autolabeler:
+  - label: 'docs'
+    files:
+      - '*.md'
+    branch:
+      - '/docs{0,1}\/.+/'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+    title:
+      - '/fix/i'
+  - label: 'enhancement'
+    branch:
+      - '/feature\/.+/'
+    title:
+      - '/feature/i'
+  - label: 'helm'
+    title:
+      - '/Helm/i'
+  - label: 'terraform'
+    title:
+      - '/Terraform/i'
+replacers:
+  - search: '/(\w+)-(\d+)/g'
+    replace: '[$1-$2](***REMOVED***/browse/$1-$2)'
