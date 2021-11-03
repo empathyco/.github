@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": ["dependencies"],
+  "reviewersFromCodeOwners": true,
+  "dependencyDashboard": true,
+  "ignorePaths": ["**/examples/**"],
+  "aliases": {
+    "empathy": "https://harbor.shared.empathy.co/chartrepo/empathyco"
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "reviewersFromCodeOwners": true,
+      "labels": ["breking-dependecy"]
+    }
+  ]
+}
