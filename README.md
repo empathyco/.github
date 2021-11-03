@@ -1,4 +1,4 @@
-# Common github settings for data projects
+# Common github settings for Platform Projects
 
 ## Release drafter
 This project contains the default configuration settings for [Release Drafter](https://github.com/marketplace/actions/release-drafter).
@@ -41,7 +41,7 @@ As a remider this is the semantic version definition:
 
 ### Activate action
 Add release drafter workflow `.github/workflows/release-drafter.yml`:
-```
+```yaml
 name: Release Drafter
 
 on:
