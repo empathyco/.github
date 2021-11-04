@@ -1,0 +1,25 @@
+{
+    "extends": [
+        "config:base"
+    ],
+    "labels": ["dependencies"],
+    "reviewersFromCodeOwners": true,
+    "assigneesFromCodeOwners": true,
+    "branchConcurrentLimit": 5,
+    "dependencyDashboard": true,
+    "dependencyDashboardApproval": true,
+    "ignorePaths": ["**/examples/**"],
+    "packageRules": [{
+            "matchUpdateTypes": ["major"],
+            "labels": ["minor", "breaking-change"]
+        },
+        {
+            "matchUpdateTypes": ["minor"],
+            "labels": ["minor", "dependencies"]
+        },
+        {
+            "matchUpdateTypes": ["patch"],
+            "labels": ["patch", "dependencies"]
+        }
+    ]
+}
