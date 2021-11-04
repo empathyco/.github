@@ -11,7 +11,7 @@
     "ignorePaths": ["**/examples/**"],
     "packageRules": [{
             "matchUpdateTypes": ["major"],
-            "labels": ["minor", "breaking-change"]
+            "labels": ["major", "breaking-change"]
         },
         {
             "matchUpdateTypes": ["minor"],
