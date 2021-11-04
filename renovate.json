@@ -1,19 +1,6 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "labels": ["dependencies"],
-  "reviewersFromCodeOwners": true,
-  "dependencyDashboard": true,
-  "ignorePaths": ["**/examples/**"],
+  "extends": ["github>empathyco/platform-github-settings"],
   "aliases": {
-    "empathy": "https://harbor.shared.empathy.co/chartrepo/empathyco"
+  "empathy": "https://harbor.shared.empathy.co/chartrepo/empathyco"
   },
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["major"],
-      "reviewersFromCodeOwners": true,
-      "labels": ["breking-dependecy"]
-    }
-  ]
 }
