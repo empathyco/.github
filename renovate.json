@@ -1,19 +1,6 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "labels": ["dependencies"],
-  "reviewersFromCodeOwners": true,
-  "dependencyDashboard": true,
-  "ignorePaths": ["**/examples/**"],
+  "extends": ["github>empathyco/platform-github-settings"],
   "aliases": {
-    "empathy": "***REMOVED***"
+  "empathy": "***REMOVED***"
   },
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["major"],
-      "reviewersFromCodeOwners": true,
-      "labels": ["breking-dependecy"]
-    }
-  ]
 }
