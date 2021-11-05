@@ -1,6 +1,6 @@
 {
   "extends": ["github>empathyco/platform-github-settings"],
   "aliases": {
-  "empathy": "https://harbor.shared.empathy.co/chartrepo/empathyco"
-  },
+    "empathy": "https://harbor.shared.empathy.co/chartrepo/empathyco"
+  }
 }
