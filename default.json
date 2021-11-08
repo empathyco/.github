@@ -7,7 +7,7 @@
     "assigneesFromCodeOwners": true,
     "branchConcurrentLimit": 3,
     "dependencyDashboard": true,
-    "dependencyDashboardApproval": true,
+    "dependencyDashboardApproval": false,
     "stabilityDays": 10,
     "allowedVersions": "!/\\.0$/",
     "ignorePaths": ["**/examples/**"],

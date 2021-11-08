@@ -2,7 +2,7 @@
     "extends": ["github>empathyco/platform-github-settings"],
     "ignoreUnstable": true,
     "ignoreDeprecated": true,
-    "dependencyDashboardApproval": false,
+    "dependencyDashboardApproval": true,
     "packageRules": [
         {
           "matchUpdateTypes": ["patch"],
