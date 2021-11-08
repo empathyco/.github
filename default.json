@@ -5,7 +5,7 @@
     "labels": ["dependencies"],
     "reviewersFromCodeOwners": true,
     "assigneesFromCodeOwners": true,
-    "branchConcurrentLimit": 5,
+    "branchConcurrentLimit": 3,
     "dependencyDashboard": true,
     "dependencyDashboardApproval": true,
     "stabilityDays": 10,
