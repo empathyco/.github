@@ -8,6 +8,8 @@
     "branchConcurrentLimit": 5,
     "dependencyDashboard": true,
     "dependencyDashboardApproval": true,
+    "stabilityDays": 10,
+    "allowedVersions": "!/\\0$/",
     "ignorePaths": ["**/examples/**"],
     "packageRules": [{
             "matchUpdateTypes": ["major"],

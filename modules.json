@@ -1,0 +1,11 @@
+{
+    "extends": ["github>empathyco/platform-github-settings"],
+    "ignoreUnstable": true,
+    "ignoreDeprecated": true,
+    "packageRules": [
+        {
+          "matchUpdateTypes": ["patch"],
+          "enabled": false         
+        }
+      ]
+  }
