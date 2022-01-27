@@ -9,7 +9,7 @@
     "dependencyDashboard": true,
     "dependencyDashboardApproval": false,
     "stabilityDays": 10,
-    "prCreation": "not-pending"
+    "prCreation": "not-pending",
     "allowedVersions": "!/\\.0$/",
     "ignorePaths": ["**/examples/**"],
     "vulnerabilityAlerts": {
