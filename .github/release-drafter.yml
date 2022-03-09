@@ -61,4 +61,4 @@ autolabeler:
       - '/Terraform/i'
 replacers:
   - search: '/(\w+)-(\d+)/g'
-    replace: '[$1-$2](***REMOVED***/browse/$1-$2)'
+    replace: '[$1-$2](${{ secrets.JIRA_BASE_URL }}/browse/$1-$2)'

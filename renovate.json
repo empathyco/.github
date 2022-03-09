@@ -1,6 +1,6 @@
 {
   "extends": ["github>empathyco/platform-github-settings"],
   "aliases": {
-    "empathy": "***REMOVED***"
+    "empathy": "${{ secrets.HARBOR_CHART_REPO_URL }}"
   }
 }
