@@ -2,40 +2,46 @@ template: "## Changes \n $CHANGES"
 name-template: 'v$RESOLVED_VERSION 🌈'
 tag-template: '$RESOLVED_VERSION'
 categories:
-  - title: '🚀 Features'
+  - title: 🚀 Features and improvements
     labels:
-      - 'feature'
-      - 'enhancement'
-  - title: '🐛 Bug Fixes'
+      - feature
+      - enhancement
+  - title: 💥 Breaking changes
     labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
-  - title: '☭ Dependencies Updates'
+      - breaking-changes
+  - title: 🐛 Bug Fixes
     labels:
-      - 'dependecy'
-  - title: '👀 Break Dependencies Updates'
-    label: 'breaking-dependecy'
-  - title: '🧰 Breaking changes'
-    label: 'breaking-changes'
+      - fix
+      - bugfix
+      - bug
+  - title: 📦 Dependency updates
+    labels:
+      - dependencies
+  - title: 📝 Documentation updates
+    labels:
+      - documentation
+  - title: 🔧 Maintenance
+    labels:
+      - chore
+      - internal
+      - maintenance
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
     labels:
-      - 'breaking-changes'
+      - major
+      - upgrade
   minor:
     labels:
-      - 'feature'
-      - 'enhancement'
-      - 'breaking-dependecy'
+      - minor
+      - enhancement
+      - feature
   patch:
     labels:
-      - 'patch'
-      - 'bug'
-      - 'docs'
-      - 'maintenance'
-      - 'dependecy'
+      - patch
+      - bug
+      - maintenance
   default: patch
 autolabeler:
   - label: 'docs'
@@ -59,6 +65,10 @@ autolabeler:
   - label: 'terraform'
     title:
       - '/Terraform/i'
+  - label: minor
+    body:
+      - '/\| minor \|/i'
+      - '/\| major \|/i'
 replacers:
   - search: '/(\w+)-(\d+)/g'
     replace: '[$1-$2](${{ secrets.JIRA_BASE_URL }}/browse/$1-$2)'
