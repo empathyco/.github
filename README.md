@@ -68,6 +68,6 @@ Note that the token needs organization wide access, because it needs access to t
 ### Configure Action
 Add release drafter configuration (`.github/release-drafter.yml`) pointing to this repo and overwrite the template title:
 ```
-_extends: platform-github-settings
+_extends: .github
 name-template: 'Module Name $RESOLVED_VERSION'
 ```
