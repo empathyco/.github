@@ -36,15 +36,18 @@ change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add
 version-resolver:
   major:
     labels:
+      - 'major'
       - 'breaking-change'
   minor:
     labels:
+      - 'minor'
       - 'feature'
       - 'enhancement'
       - 'improvement'
       - 'deprecation'
   patch:
     labels:
+      - 'patch'
       - 'bug'
       - 'bugfix'
       - 'fix'
@@ -102,6 +105,10 @@ autolabeler:
   - label: 'terraform'
     title:
       - '/Terraform/i'
+  - label: minor
+    body:
+      - '/\| minor \|/i'
+      - '/\| major \|/i'
 replacers:
   - search: '/(\w+)-(\d+)/g'
     replace: '[$1-$2](https://searchbroker.atlassian.net/browse/$1-$2)'

@@ -40,7 +40,7 @@ To help with the pr labeling, some rules have been configured based on branch an
 * JIRA-ID: Jira ID of the task being resolved.
 * description: Describes the branch content.
   
-ej: `feature/JIRA-1234_new_super_cool_tool`
+ex: `feature/JIRA-1234_new_super_cool_tool`
 
 #### PR title convention
 Following conventional commits (https://www.conventionalcommits.org/en/v1.0.0/) standard also for PR titles
@@ -49,6 +49,11 @@ Following conventional commits (https://www.conventionalcommits.org/en/v1.0.0/) 
 * scope: (Optional) Specify a submodule where the changes are being applied.
 * !: Exclamation symbol specify that the change is also a breaking change.
 * description: Describes the branch content
+
+ex:
+* `feature: JIRA-1234 New super cool feature` Just a new feature
+* `improvement!: JIRA-1234 New super cool improvement` Improvement that breaks with the previous version (!)
+* `improvement(IAM chart): JIRA-1234 Improvement on the IAM chart submodule`
 
 #### Autolabels configured
 
