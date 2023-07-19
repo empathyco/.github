@@ -13,7 +13,7 @@ on:
 
 jobs:
   update_release_draft:
-    runs-on: self-hosted
+    runs-on: [ubuntu-latest]
     steps:
       # (Optional) GitHub Enterprise requires GHE_HOST variable set
       #- name: Set GHE_HOST

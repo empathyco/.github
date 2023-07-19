@@ -1,64 +1,104 @@
-template: "## Changes \n $CHANGES"
-name-template: 'v$RESOLVED_VERSION 🌈'
+name-template: '$RESOLVED_VERSION' # should be overridden on a project level basis
 tag-template: '$RESOLVED_VERSION'
+tag-prefix: ''
 categories:
-  - title: 🚀 Features and improvements
+  - title: '🔥Breaking Changes'
     labels:
-      - feature
-      - enhancement
-  - title: 💥 Breaking changes
+      - 'breaking-change'
+  - title: '🎉New Features'
     labels:
-      - breaking-changes
-  - title: 🐛 Bug Fixes
+      - 'feature'
+  - title: '🔝Improvements'
     labels:
-      - fix
-      - bugfix
-      - bug
-  - title: 📦 Dependency updates
+      - 'improvement'
+      - 'enhancement'
+  - title: '🐛Bug Fixes'
     labels:
-      - dependencies
-  - title: 📝 Documentation updates
+      - 'bug'
+      - 'bugfix'
+      - 'fix'
+  - title: '📦Dependency updates'
     labels:
-      - documentation
-  - title: 🔧 Maintenance
+      - 'dependencies'
+  - title: '📚Documentation'
     labels:
-      - chore
-      - internal
-      - maintenance
-change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+      - 'documentation'
+  - title: '🧹Deprecations'
+    labels:
+      - 'deprecation'
+  - title: '🔧Maintenance'
+    labels:
+      - 'chore'
+      - 'internal'
+      - 'maintenance'
+change-template: '- $TITLE (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
     labels:
-      - major
-      - upgrade
+      - 'major'
+      - 'breaking-change'
   minor:
     labels:
-      - minor
-      - enhancement
-      - feature
+      - 'minor'
+      - 'feature'
+      - 'enhancement'
+      - 'improvement'
+      - 'deprecation'
   patch:
     labels:
-      - patch
-      - bug
-      - maintenance
-  default: patch
+      - 'patch'
+      - 'bug'
+      - 'bugfix'
+      - 'fix'
+      - 'dependencies'
+      - 'documentation'
+      - 'chore'
+      - 'internal'
+      - 'maintenance'
+  default: 'patch'
 autolabeler:
-  - label: 'docs'
+  - label: 'breaking-change'
+    branch:
+      - '/.*!:.*/'
+  - label: 'feature'
+    branch:
+      - '/feature\/.+/i'
+      - '/feat\/.+/i'
+    title:
+      - '/feature.*: /i'
+      - '/feat.*: /i'
+  - label: 'improvement'
+    branch:
+      - '/improvement\/.+/i'
+    title:
+      - '/improvement.*: /i'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/i'
+      - '/bugfix\/.+/i'
+      - '/bug\/.+/i'
+      - '/hotfix\/.+/i'
+    title:
+      - '/fix.*: /i'
+      - '/bugfix.*: /i'
+      - '/bug.*: /i'
+      - '/hotfix.*: /i'
+  - label: 'dependencies'
+    branch:
+      - '/dependabot\/.*/'
+  - label: 'documentation'
     files:
       - '*.md'
     branch:
       - '/docs{0,1}\/.+/'
-  - label: 'bug'
-    branch:
-      - '/fix\/.+/'
     title:
-      - '/fix/i'
-  - label: 'enhancement'
+      - '/docs.*: /i'
+  - label: 'deprecation'
     branch:
-      - '/feature\/.+/'
+      - '/deprecation\/.+/i'
     title:
-      - '/feature/i'
+      - '/deprecation.*: .*/i'
   - label: 'helm'
     title:
       - '/Helm/i'
@@ -72,3 +112,5 @@ autolabeler:
 replacers:
   - search: '/(\w+)-(\d+)/g'
     replace: '[$1-$2](https://searchbroker.atlassian.net/browse/$1-$2)'
+
+template: "$CHANGES"
