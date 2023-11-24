@@ -2,12 +2,15 @@
     "extends": ["github>empathyco/platform-github-settings"],
     "ignoreUnstable": true,
     "ignoreDeprecated": true,
-    "draftPR": true,
     "dependencyDashboardApproval": true,
     "packageRules": [
         {
           "matchUpdateTypes": ["patch"],
           "enabled": false         
+        },
+        {
+            "matchCategories": ["terraform"],
+            "addLabels": ["terraform", "no-autoplan"]
         }
       ]
   }
