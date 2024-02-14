@@ -1,6 +1,0 @@
-{
-  "extends": ["github>empathyco/.github"],
-  "aliases": {
-    "empathy": "https://harbor.shared.empathy.co/chartrepo/empathyco"
-  }
-}
