@@ -1,17 +1,10 @@
 {
     "extends": [
-        "config:base"
+        "config:recommended"
     ],
     "labels": ["dependencies"],
     "reviewersFromCodeOwners": true,
     "assigneesFromCodeOwners": true,
-    "branchConcurrentLimit": 3,
-    "dependencyDashboard": true,
-    "dependencyDashboardApproval": false,
-    "stabilityDays": 10,
-    "prCreation": "not-pending",
-    "allowedVersions": "!/\\.0$/",
-    "ignorePaths": ["**/examples/**"],
     "vulnerabilityAlerts": {
         "enabled": true,
         "labels": ["security"]
