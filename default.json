@@ -5,6 +5,7 @@
     "labels": ["dependencies"],
     "reviewersFromCodeOwners": true,
     "assigneesFromCodeOwners": true,
+    "rebaseWhen": "conflicted",
     "vulnerabilityAlerts": {
         "enabled": true,
         "labels": ["security"]
