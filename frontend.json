@@ -2,8 +2,9 @@
     "extends": [
       "github>empathyco/.github",
       ":semanticCommitTypeAll(chore)",
-      "schedule:earlyMondays"
+      "schedule:earlyMondays",
+      "npm:unpublishSafe"
     ],
     "rangeStrategy": "bump",
-    "ignoreDeps": ["npm", "node", "@types/node"]
+    "ignoreDeps": ["npm", "node"]
   }
