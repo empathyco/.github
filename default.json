@@ -1,4 +1,5 @@
 {
+    "configMigration": true,
     "extends": [
         "config:best-practices"
     ],
