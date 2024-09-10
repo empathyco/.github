@@ -1,0 +1,9 @@
+{
+    "extends": [
+      "github>empathyco/.github",
+      ":semanticCommitTypeAll(chore)",
+      "schedule:earlyMondays"
+    ],
+    "rangeStrategy": "bump",
+    "ignoreDeps": ["npm", "node", "@types/node"]
+  }
