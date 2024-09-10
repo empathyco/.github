@@ -3,7 +3,8 @@
       "github>empathyco/.github",
       ":semanticCommitTypeAll(chore)",
       "schedule:earlyMondays",
-      "npm:unpublishSafe"
+      "npm:unpublishSafe",
+      "workarounds:typesNodeVersioning"
     ],
     "rangeStrategy": "bump",
     "ignoreDeps": ["npm", "node"]
