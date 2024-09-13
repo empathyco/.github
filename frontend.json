@@ -2,6 +2,7 @@
     "extends": [
       "github>empathyco/.github",
       ":semanticCommitTypeAll(chore)",
+      "group:allNonMajor",
       "schedule:earlyMondays",
       "npm:unpublishSafe",
       "workarounds:typesNodeVersioning"
