@@ -8,5 +8,12 @@
       "workarounds:typesNodeVersioning"
     ],
     "rangeStrategy": "bump",
-    "ignoreDeps": ["npm", "node"]
+    "ignoreDeps": ["npm", "node"],
+    "packageRules": [
+        {
+            "matchPackagePatterns": ["^@empathyco/"],
+            "groupName": "empathyco",
+            "description": "Group all @empathyco package updates into a single PR."
+        }
+    ]
   }
