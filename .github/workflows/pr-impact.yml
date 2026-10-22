@@ -1,0 +1,146 @@
+# PR impact gate — reusable workflow.
+#
+# PRs that touch production or staging must have their change communicated
+# before merge. This workflow:
+#   notify  sends the pull_request event to the Hermes on-call agent, signed
+#           like a GitHub webhook. The agent classifies the PR (rules live in
+#           the agent's repos.yaml), labels it pr-impact/none or
+#           pr-impact/needs-comms and announces prod/staging changes in Slack
+#           #delivery. "@hermes comunicación enviada" in that thread labels it
+#           pr-impact/comms-sent.
+#   gate    the required status check: green only with pr-impact/none or
+#           pr-impact/comms-sent, set by the agent's GitHub App (a label added
+#           by a human does not count).
+#
+# Caller (in the repo, e.g. .github/workflows/pr-impact.yml):
+#
+#   name: PR impact
+#   on:
+#     pull_request:
+#       types: [opened, reopened, ready_for_review, synchronize, labeled, unlabeled]
+#   permissions:
+#     issues: write
+#     pull-requests: read
+#   jobs:
+#     pr-impact:
+#       uses: empathyco/.github/.github/workflows/pr-impact.yml@main
+#       secrets: inherit
+#
+# Org settings it reads: secret PR_IMPACT_WEBHOOK_SECRET and variable
+# PR_IMPACT_WEBHOOK_URL (the agent's /webhooks/github-pr endpoint; internal,
+# hence the self-hosted runners). Required check name: "pr-impact / gate".
+# Onboarding a repo also needs an entry in the agent's repos.yaml and the
+# GitHub App hermes-platform-agent installed on it.
+
+name: PR impact (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        description: JSON runner labels; must reach the agent's internal endpoint.
+        type: string
+        default: '["platform", "small"]'
+      app-bot:
+        description: Login of the GitHub App that owns the pr-impact/* labels.
+        type: string
+        default: hermes-platform-agent[bot]
+
+jobs:
+  notify:
+    if: >-
+      contains(fromJSON('["opened","reopened","ready_for_review","synchronize"]'), github.event.action)
+      && !github.event.pull_request.draft
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        env:
+          WEBHOOK_URL: ${{ vars.PR_IMPACT_WEBHOOK_URL }}
+          WEBHOOK_SECRET: ${{ secrets.PR_IMPACT_WEBHOOK_SECRET }}
+        with:
+          script: |
+            const crypto = require('crypto');
+            const { WEBHOOK_URL: url, WEBHOOK_SECRET: secret } = process.env;
+            if (!url || !secret) {
+              core.setFailed('PR_IMPACT_WEBHOOK_URL / PR_IMPACT_WEBHOOK_SECRET not available (fork PR or org setting missing)');
+              return;
+            }
+            const pr = context.payload.pull_request;
+            // New commits can add prod/staging files: a "none" verdict is for
+            // the previous head, so drop it and let the agent re-classify.
+            // (Removal by GITHUB_TOKEN does not re-trigger this workflow; the
+            // gate job treats "none" on synchronize as stale by itself.)
+            if (context.payload.action === 'synchronize' && pr.labels.some(l => l.name === 'pr-impact/none')) {
+              await github.rest.issues.removeLabel({ ...context.repo, issue_number: pr.number, name: 'pr-impact/none' })
+                .catch(e => { if (e.status !== 404) throw e; });
+            }
+            const body = JSON.stringify(context.payload);
+            const headers = {
+              'Content-Type': 'application/json',
+              'X-GitHub-Event': 'pull_request',
+              'X-GitHub-Delivery': `${context.runId}-${context.runAttempt ?? process.env.GITHUB_RUN_ATTEMPT}`,
+              'X-Hub-Signature-256': 'sha256=' + crypto.createHmac('sha256', secret).update(body).digest('hex'),
+            };
+            for (let attempt = 1; ; attempt++) {
+              let res;
+              try {
+                res = await fetch(url, { method: 'POST', headers, body, signal: AbortSignal.timeout(20000) });
+              } catch (e) {
+                res = { ok: false, status: 0, text: async () => String(e) };
+              }
+              const text = await res.text();
+              if (res.ok) { core.info(`agent accepted (${res.status}): ${text.slice(0, 200)}`); return; }
+              // 4xx other than rate limiting will not fix itself (bad signature, unknown route).
+              if (attempt >= 4 || (res.status >= 400 && res.status < 500 && res.status !== 429)) {
+                core.setFailed(`agent webhook failed (${res.status}): ${text.slice(0, 300)}`);
+                return;
+              }
+              core.warning(`agent webhook ${res.status}, retry ${attempt}/3`);
+              await new Promise(r => setTimeout(r, 10000 * attempt));
+            }
+
+  gate:
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
+    permissions:
+      issues: read
+      pull-requests: read
+    concurrency:
+      group: pr-impact-gate-${{ github.repository }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        env:
+          APP_BOT: ${{ inputs.app-bot }}
+        with:
+          script: |
+            const NONE = 'pr-impact/none', NEEDS = 'pr-impact/needs-comms', SENT = 'pr-impact/comms-sent';
+            const bot = process.env.APP_BOT;
+            const { owner, repo } = context.repo;
+            const number = context.payload.pull_request.number;
+            const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
+            const labels = pr.labels.map(l => l.name);
+
+            if (labels.includes(NEEDS) && !labels.includes(SENT)) {
+              core.setFailed('Este PR afecta a production/staging: envía la comunicación y responde en el hilo de #delivery con "@hermes comunicación enviada".');
+              return;
+            }
+            const verdict = labels.includes(SENT) ? SENT : labels.includes(NONE) ? NONE : null;
+            if (!verdict) {
+              core.setFailed('Esperando el análisis de impacto del agente (label pr-impact/*). Si no llega en unos minutos, revisa el job "notify".');
+              return;
+            }
+            if (verdict === NONE && context.payload.action === 'synchronize') {
+              core.setFailed('Nuevos commits: el agente está re-analizando el impacto.');
+              return;
+            }
+            // Who set the label that is in force now: its latest "labeled" event.
+            const events = await github.paginate(github.rest.issues.listEvents, { owner, repo, issue_number: number, per_page: 100 });
+            const last = events.filter(e => e.event === 'labeled' && e.label?.name === verdict).pop();
+            const actor = last?.performed_via_github_app ? `${last.performed_via_github_app.slug}[bot]` : last?.actor?.login;
+            if (actor !== bot) {
+              core.setFailed(`${verdict} lo puso ${actor ?? 'desconocido'}, no ${bot}: solo cuenta el label del agente. Quítalo y deja que el agente lo gestione.`);
+              return;
+            }
+            core.info(verdict === SENT ? 'Comunicación confirmada en #delivery.' : 'Sin impacto en production/staging.');
